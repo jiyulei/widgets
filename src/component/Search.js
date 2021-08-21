@@ -3,9 +3,19 @@ import axios from "axios";
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState("game");
+  const [debounceTerm, setDebounceTerm] = useState(searchTerm);
   const [results, setResult] = useState([]);
+  // method 0: just like method 1 but using another state to do debounce
+  useEffect(() => {
+    const timeId = setTimeout(() => {
+      setDebounceTerm(searchTerm);
+    }, 1000);
 
-  // method 1:
+    return () => {
+      clearTimeout(timeId);
+    };
+  }, [searchTerm]);
+
   useEffect(() => {
     const search = async () => {
       const { data } = await axios.get("https://en.wikipedia.org/w/api.php", {
@@ -14,27 +24,48 @@ const Search = () => {
           list: "search",
           origin: "*",
           format: "json",
-          srsearch: searchTerm,
+          srsearch: debounceTerm,
         },
       });
 
       setResult(data.query.search);
     };
 
-    if (searchTerm && !results.length) {
-      search();
-    } else {
-      const timeoutId = setTimeout(() => {
-        if (searchTerm) {
-          search();
-        }
-      }, 1000);
+    debounceTerm && search();
+  }, [debounceTerm]);
 
-      return () => {
-        clearTimeout(timeoutId);
-      };
-    }
-  }, [results.length, searchTerm]);
+  // method 1:
+  // useEffect(() => {
+  //   const search = async () => {
+  //     const { data } = await axios.get("https://en.wikipedia.org/w/api.php", {
+  //       params: {
+  //         action: "query",
+  //         list: "search",
+  //         origin: "*",
+  //         format: "json",
+  //         srsearch: searchTerm,
+  //       },
+  //     });
+
+  //     setResult(data.query.search);
+  //   };
+
+  //   if (searchTerm && !results.length) {
+  //     //search when initial render
+  //     search();
+  //   } else {
+  //     const timeoutId = setTimeout(() => {
+  //       if (searchTerm) {
+  //         search();
+  //       }
+  //     }, 1000);
+
+  //     return () => {
+  //       clearTimeout(timeoutId);
+  //     };
+  //   }
+  //   // adding results.lenth will sovle the warning but it will also call useEffect when results changes
+  // }, [searchTerm, results.length]);
 
   // method 2: define async function and immediately invoke
   // useEffect(() => {
