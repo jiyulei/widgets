@@ -89,3 +89,26 @@ useEffect( () => {} , secondArgument? );
 
    throttle(节流) --> 保证n毫秒内恒定次数执行
 
+5. Event bubbling
+   event will bubble to parent div.
+   注意执行顺序： 若用了addEventListener，则addEventListener里的事件永远会第一个执行。
+    eg：
+
+    body   ---> addEventListener('click', () => console.log('body clicked')) 
+      div1
+        div2  ---> onClick => console.log('div2 clicked')
+          div3   
+            div4  ---> onClick => console.log('div4 clicked')
+
+    如果点击 div4 则输出结果为： 
+    ---> body clicked
+    ---> div4 clicked
+    ---> div2 clicked
+
+6. addEventListener('click', function(), { capture: true }) 
+                                                ^
+                                                |
+                                          react 17 requires
+                                          
+   removeEventListener('click', function(), { capture: true }) 
+
