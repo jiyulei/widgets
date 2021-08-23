@@ -6,7 +6,7 @@ import React, { useState, useEffect, useRef } from "react";
 // need to addEventListener for body
 // because dropdown component cannot listen to parent component's event.
 
-const Dropdown = ({ options, selected, onSelectedChange }) => {
+const Dropdown = ({ label, options, selected, onSelectedChange }) => {
   const [open, setOpen] = useState(false);
   const refForForm = useRef();
 
@@ -54,7 +54,7 @@ const Dropdown = ({ options, selected, onSelectedChange }) => {
   return (
     <div ref={refForForm} className="ui form">
       <div className="field">
-        <label className="label">Select a color</label>
+        <label className="label">{label}</label>
         <div
           onClick={() => setOpen(!open)}
           className={`ui selection dropdown ${open ? "visible active" : ""}`}
