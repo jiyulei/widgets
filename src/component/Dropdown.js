@@ -23,7 +23,7 @@ const Dropdown = ({ label, options, selected, onSelectedChange }) => {
 
     document.body.addEventListener("click", onBodyClick, { capture: true });
 
-    // problem3: if this Dropdown component is not rendered, 
+    // problem3: if this Dropdown component is not rendered,
     // then we dont have refForForm at all,
     // function in line 19 will get error cause ref is null.
     // So we need to detach the eventListener after component gets removed from DOM,
@@ -51,21 +51,28 @@ const Dropdown = ({ label, options, selected, onSelectedChange }) => {
     );
   });
 
+  const usingAsColor = label === "Select a color";
+
   return (
-    <div ref={refForForm} className="ui form">
-      <div className="field">
-        <label className="label">{label}</label>
-        <div
-          onClick={() => setOpen(!open)}
-          className={`ui selection dropdown ${open ? "visible active" : ""}`}
-        >
-          <i className="dropdown icon"></i>
-          <div className="text">{selected.label}</div>
-          <div className={`menu ${open ? "visible" : ""} transition`}>
-            {renderedOptions}
+    <div>
+      <div ref={refForForm} className="ui form">
+        <div className="field">
+          <label className="label">{label}</label>
+          <div
+            onClick={() => setOpen(!open)}
+            className={`ui selection dropdown ${open ? "visible active" : ""}`}
+          >
+            <i className="dropdown icon"></i>
+            <div className="text">{selected.label}</div>
+            <div className={`menu ${open ? "visible" : ""} transition`}>
+              {renderedOptions}
+            </div>
           </div>
         </div>
       </div>
+      {usingAsColor && (
+        <label style={{ color: `${selected.value}` }}> This is the Text.</label>
+      )}
     </div>
   );
 };

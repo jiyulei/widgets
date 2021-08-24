@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import Header from "./component/Header";
 import Accordion from "./component/Accordion";
 import Search from "./component/Search";
 import Dropdown from "./component/Dropdown";
 import Translate from "./component/Translate";
+import Route from "./component/Route";
 
 // class App extends React.Component {
 //   state = {
@@ -33,15 +35,31 @@ const options = [
   { label: "The-color-blue", value: "blue" },
   { label: "The-color-gray", value: "gray" },
 ];
+
 const App = () => {
-  // const [selected, setSelected] = useState(options[0]);
+  const [selected, setSelected] = useState(options[0]);
 
   return (
     <div>
-      {/* <Accordion items={items} /> */}
-      {/* <Search /> */}
-      {/* <Dropdown label="Select a color" options={options} selected={selected} onSelectedChange={setSelected}/> */}
-      <Translate />
+      <Header/>
+      <Route path="/">
+        <Accordion items={items} />;
+      </Route>
+      <Route path="/search">
+        <Search />
+      </Route>
+      <Route path="/dropdown">
+        <Dropdown
+          label="Select a color"
+          options={options}
+          selected={selected}
+          onSelectedChange={setSelected}
+        />
+        ;
+      </Route>
+      <Route path="/translate">
+        <Translate />;
+      </Route>
     </div>
   );
 };
