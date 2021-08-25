@@ -43,7 +43,7 @@ const App = () => {
     <div>
       <Header/>
       <Route path="/">
-        <Accordion items={items} />;
+        <Accordion items={items} />
       </Route>
       <Route path="/search">
         <Search />
@@ -55,7 +55,6 @@ const App = () => {
           selected={selected}
           onSelectedChange={setSelected}
         />
-        ;
       </Route>
       <Route path="/translate">
         <Translate />;
